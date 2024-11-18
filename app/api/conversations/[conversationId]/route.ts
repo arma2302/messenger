@@ -1,20 +1,19 @@
+// // app/api/conversations/[conversationId]/route.ts
 import getCurrentuser from "@/app/actions/getCurrentUser";
 import { NextResponse } from "next/server";
 import prisma from "@/app/libs/prismadb";
 import { pusherServer } from "@/app/libs/pusher";
-interface IParams {
-  conversationId: string;
-}
 
 export async function DELETE(
   request: Request,
-  { params }: { params: IParams }
+  { params }: { params: { conversationId: string } }
 ) {
   try {
-    const { conversationId } = params;
+    const { conversationId } = params; // Extract params here
+
     const currentuser = await getCurrentuser();
     if (!currentuser?.id || !currentuser?.email) {
-      return new NextResponse("Unauthorixed", { status: 401 });
+      return new NextResponse("Unauthorized", { status: 401 });
     }
 
     const existingConversation = await prisma.conversation.findUnique({
@@ -25,7 +24,7 @@ export async function DELETE(
     });
 
     if (!existingConversation) {
-      return new NextResponse("invalid data", { status: 400 });
+      return new NextResponse("Invalid data", { status: 400 });
     }
 
     const deleteConversation = await prisma.conversation.deleteMany({
