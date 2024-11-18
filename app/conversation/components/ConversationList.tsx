@@ -22,7 +22,6 @@ const ConversationList: React.FC<ConversationListProps> = ({
 }) => {
   const [items, setItems] = useState(initialItems);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const router = useRouter();
   const session = useSession();
   const { conversationId, isOpen } = useConversation();
   const pusherKey = useMemo(() => {
@@ -35,7 +34,9 @@ const ConversationList: React.FC<ConversationListProps> = ({
     }
     const newHandler = (conversation: FullConversationType) => {
       setItems((current) => {
-        if (find(current, { id: conversationId })) return current;
+        if (find(current, { id: conversationId })) {
+          return current;
+        }
         return [conversation, ...current];
       });
     };
