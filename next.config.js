@@ -6,6 +6,10 @@ const nextConfig = {
   images: {
     domains: ["res.cloudinary.com"],
   },
+  experimental: {
+    // @ts-ignore
+    appDir: true, // Make sure this is enabled to use the app directory
+  },
 };
 
 // Use CommonJS export

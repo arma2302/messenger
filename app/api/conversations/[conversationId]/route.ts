@@ -2,17 +2,16 @@ import getCurrentuser from "@/app/actions/getCurrentUser";
 import { NextResponse } from "next/server";
 import prisma from "@/app/libs/prismadb";
 import { pusherServer } from "@/app/libs/pusher";
-
-interface Iparams {
+interface IParams {
   conversationId: string;
 }
 
 export async function DELETE(
   request: Request,
-  { params }: { params: Iparams }
+  { params }: { params: IParams }
 ) {
   try {
-    const { conversationId } = await params;
+    const { conversationId } = params;
     const currentuser = await getCurrentuser();
     if (!currentuser?.id || !currentuser?.email) {
       return new NextResponse("Unauthorixed", { status: 401 });
