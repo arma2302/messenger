@@ -20,7 +20,6 @@ export default function RootLayout({
         <AuthContext>
           <ToasterContext />
           <ActiveStatus />
-
           {children}
         </AuthContext>
       </body>
