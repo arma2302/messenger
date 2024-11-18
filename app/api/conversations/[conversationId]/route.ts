@@ -1,4 +1,3 @@
-// // app/api/conversations/[conversationId]/route.ts
 import getCurrentuser from "@/app/actions/getCurrentUser";
 import { NextResponse } from "next/server";
 import prisma from "@/app/libs/prismadb";
@@ -6,10 +5,10 @@ import { pusherServer } from "@/app/libs/pusher";
 
 export async function DELETE(
   request: Request,
-  { params }: { params: { conversationId: string } }
+  contex: { params: { conversationId: string } }
 ) {
   try {
-    const { conversationId } = params; // Extract params here
+    const { conversationId } = contex.params; // Extract params here
 
     const currentuser = await getCurrentuser();
     if (!currentuser?.id || !currentuser?.email) {

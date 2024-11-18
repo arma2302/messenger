@@ -6,7 +6,7 @@ import useActiceUserList from "../hooks/useActiveUserList";
 import clsx from "clsx";
 
 interface AvatarProps {
-  user?: User;
+  user?: User | null;
 }
 
 const Avatar: React.FC<AvatarProps> = ({ user }) => {
