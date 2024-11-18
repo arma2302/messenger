@@ -10,6 +10,7 @@ import axios from "axios";
 import toast from "react-hot-toast";
 import { signIn, useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
+import LoadingModal from "@/app/component/LoadingModal";
 
 export default function AuthForm() {
   const session = useSession();
@@ -100,68 +101,76 @@ export default function AuthForm() {
   };
 
   return (
-    <div className="mt-8 sm:mx-auto sm:w-full sm:mx-w-md ">
-      <div className="bg-white px-4 py-8  shadow sm:rounded-lg sm:px-10 md:w-1/4 sm:mx-auto w-11/12 mx-auto">
-        <form onSubmit={handleSubmit(onsubmit)} className="space-y-6">
-          {varient === "REGISTER" && (
-            <Input label="Name" register={register} id="name" errors={errors} />
-          )}
-          <Input
-            label="Email"
-            register={register}
-            id="email"
-            errors={errors}
-            type="email"
-          />
-          <Input
-            label="Password"
-            register={register}
-            id="password"
-            errors={errors}
-            type="password"
-          />
-          <div>
-            <Button type="submit" disabled={isLoading}>
-              {varient === "LOGIN" ? "Sign In" : "Register"}
-            </Button>
-          </div>
-          <div className=" mt-6 ">
-            <div className="relative">
-              <div className="absolute inset-0 flex items-center">
-                <div className="border-t border-gray-300 w-full" />
+    <>
+      {isLoading && <LoadingModal />}
+      <div className="mt-8 sm:mx-auto sm:w-full sm:mx-w-md ">
+        <div className="bg-white px-4 py-8  shadow sm:rounded-lg sm:px-10 md:w-1/4 sm:mx-auto w-11/12 mx-auto">
+          <form onSubmit={handleSubmit(onsubmit)} className="space-y-6">
+            {varient === "REGISTER" && (
+              <Input
+                label="Name"
+                register={register}
+                id="name"
+                errors={errors}
+              />
+            )}
+            <Input
+              label="Email"
+              register={register}
+              id="email"
+              errors={errors}
+              type="email"
+            />
+            <Input
+              label="Password"
+              register={register}
+              id="password"
+              errors={errors}
+              type="password"
+            />
+            <div>
+              <Button type="submit" disabled={isLoading}>
+                {varient === "LOGIN" ? "Sign In" : "Register"}
+              </Button>
+            </div>
+            <div className=" mt-6 ">
+              <div className="relative">
+                <div className="absolute inset-0 flex items-center">
+                  <div className="border-t border-gray-300 w-full" />
+                </div>
+              </div>
+              <div className="flex relative  justify-center text-sm items-center">
+                <span className="absolute bg-white text-gray-500">
+                  Or continue With
+                </span>
               </div>
             </div>
-            <div className="flex relative  justify-center text-sm items-center">
-              <span className="absolute bg-white text-gray-500">
-                Or continue With
-              </span>
+            <div className="mt-6 flex gap-4">
+              <AuthSocialButton
+                icon={BsGithub}
+                onClick={() => socialActions("github")}
+              />
+              <AuthSocialButton
+                icon={BsGoogle}
+                onClick={() => socialActions("google")}
+              />
             </div>
-          </div>
-          <div className="mt-6 flex gap-4">
-            <AuthSocialButton
-              icon={BsGithub}
-              onClick={() => socialActions("github")}
-            />
-            <AuthSocialButton
-              icon={BsGoogle}
-              onClick={() => socialActions("google")}
-            />
-          </div>
-          <div className="text-sm flex justify-center gap-2 mt-6 px-2 text-gray-500 ">
-            <p>
-              {varient === "LOGIN"
-                ? "New to Messenger?"
-                : "Alreday Have an Account?"}
-            </p>
-            <div
-              onClick={togglevarient}
-              className="text-gray-900 underline cursor-pointer"
-            >
-              {varient === "LOGIN" ? "Create An Account " : "Login"}
+            <div className="text-sm flex justify-center gap-2 mt-6 px-2 text-gray-500 ">
+              <p>
+                {varient === "LOGIN"
+                  ? "New to Messenger?"
+                  : "Alreday Have an Account?"}
+              </p>
+              <div
+                onClick={togglevarient}
+                className="text-gray-900 underline cursor-pointer"
+              >
+                {varient === "LOGIN" ? "Create An Account " : "Login"}
+              </div>
             </div>
-          </div>
-        </form>
+          </form>
+        </div>
       </div>
-    </div>
+    </>
   );
 }

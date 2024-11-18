@@ -67,7 +67,6 @@ export async function POST(request: Request) {
     const singleConversation = existingConversations[0];
     if (singleConversation) {
       console.log("convo already Exist ");
-
       return NextResponse.json(singleConversation);
     }
 
