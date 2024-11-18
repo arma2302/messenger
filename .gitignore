@@ -37,4 +37,10 @@ jspm_packages
 .node_repl_history
 .next
 .swc/
-.*.env
+# Ignore local environment variable files
+.env
+.env.localgit add .gitignore
+
+.env.development.local
+.env.test.local
+.env.production.local
