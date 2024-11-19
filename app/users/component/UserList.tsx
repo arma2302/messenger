@@ -3,6 +3,7 @@
 import { User } from "@prisma/client";
 import React from "react";
 import UserBox from "./UserBox";
+import ActiveStatus from "@/app/component/ActiveStatus";
 
 interface UserListProps {
   items: User[];
@@ -16,7 +17,12 @@ const UserList: React.FC<UserListProps> = ({ items }) => {
           <div className="text-2xl font-bold text-neutral-800 py-4">Users</div>
         </div>
         {items.map((item) => {
-          return <UserBox data={item} key={item.id} />;
+          return (
+            <>
+              <ActiveStatus />
+              <UserBox data={item} key={item.id} />
+            </>
+          );
         })}
       </div>
     </aside>

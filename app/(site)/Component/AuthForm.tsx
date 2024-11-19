@@ -19,8 +19,13 @@ export default function AuthForm() {
   const [isLoading, setLoading] = useState(false);
   useEffect(() => {
     if (session?.status === "authenticated") {
+      setLoading(true);
       router.push("/users");
     }
+
+    return () => {
+      setLoading(false);
+    };
   }, [session?.status, router]);
   const togglevarient = useCallback(() => {
     if (varient === "LOGIN") {

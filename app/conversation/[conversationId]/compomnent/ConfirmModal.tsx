@@ -1,7 +1,9 @@
 "use client";
 
+import LoadingModal from "@/app/component/LoadingModal";
 import Modal from "@/app/component/Modal";
 import useConversation from "@/app/hooks/useConversation";
+import Loading from "@/app/users/loading";
 import {
   Button,
   DialogBackdrop,
@@ -38,6 +40,7 @@ const ConfirmModal: React.FC<ConfirmModalProps> = ({ isOpen, onClose }) => {
 
   return (
     <div>
+      {isLoading && <LoadingModal />}
       <Modal isOpen={isOpen} onClose={onClose}>
         <div className="sm:flex sm:items-start bg-white  gap-3 p-4 w-full">
           <div
