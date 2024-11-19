@@ -32,7 +32,7 @@ const SettingsModal: React.FC<SettingModalProps> = ({
     setValue,
     watch,
   } = useForm<FieldValues>({
-    defaultValues: { name: currentUser.name, image: currentUser.image },
+    defaultValues: { name: currentUser?.name, image: currentUser?.image },
   });
 
   const image = watch("image");

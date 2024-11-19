@@ -2,15 +2,15 @@
 
 import Avatar from "@/app/component/Avatar";
 import useOtherUser from "@/app/hooks/useOtherUsers";
-
 import { Conversation, User } from "@prisma/client";
-
 import Link from "next/link";
 import React, { useMemo, useState } from "react";
 import { HiChevronLeft, HiEllipsisHorizontal } from "react-icons/hi2";
 import ProfileDrawer from "./ProfileDrawer";
 import AvatarGroup from "@/app/component/AvatarGroup";
 import useActiceUserList from "@/app/hooks/useActiveUserList";
+import { HiCamera, HiVideoCamera } from "react-icons/hi";
+import VideoCall from "./VideoCall";
 
 interface HeaderProps {
   convo: Conversation & {
@@ -36,9 +36,15 @@ const Header: React.FC<HeaderProps> = ({ convo }) => {
   }, [convo, isActive]);
 
   const [drawerOpen, setDraweropen] = useState(false);
+  const [videoCallOpen, setVideoCallOpen] = useState(false);
+
+  const startVideoCall = () => {
+    setVideoCallOpen(true);
+  };
 
   return (
     <>
+      {videoCallOpen && <VideoCall convo={convo} />}
       <ProfileDrawer
         isOpen={drawerOpen}
         data={convo}
@@ -58,19 +64,26 @@ const Header: React.FC<HeaderProps> = ({ convo }) => {
             <Avatar user={otherUser} />
           )}
           <div className="flex flex-col">
-            <div>{convo.name || otherUser.name}</div>
+            <div>{convo.name || otherUser?.name}</div>
             <div className="text-sm font-light text-neutral-500">
               {statusText}
             </div>
           </div>
         </div>
-        <HiEllipsisHorizontal
-          size={32}
-          onClick={() => {
-            setDraweropen(true);
-          }}
-          className="text-sky-500 hover:text-sky-600 curser-pointer transition"
-        />
+        <div className="flex  items-center  gap-3">
+          <HiVideoCamera
+            size={32}
+            className="text-sky-500"
+            onClick={startVideoCall}
+          />
+          <HiEllipsisHorizontal
+            size={32}
+            onClick={() => {
+              setDraweropen(true);
+            }}
+            className="text-sky-500 hover:text-sky-600 curser-pointer transition"
+          />
+        </div>
       </div>
     </>
   );
