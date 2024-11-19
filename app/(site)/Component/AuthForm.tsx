@@ -11,12 +11,16 @@ import toast from "react-hot-toast";
 import { signIn, useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import LoadingModal from "@/app/component/LoadingModal";
+import { HiEye, HiEyeOff } from "react-icons/hi";
 
 export default function AuthForm() {
   const session = useSession();
   const router = useRouter();
   const [varient, setVarient] = useState<"LOGIN" | "REGISTER">("LOGIN");
   const [isLoading, setLoading] = useState(false);
+  const [passwordVisiblity, setPasswordVisiblity] = useState<
+    "password" | "text"
+  >("password");
   useEffect(() => {
     if (session?.status === "authenticated") {
       setLoading(true);
@@ -34,6 +38,14 @@ export default function AuthForm() {
       setVarient("LOGIN");
     }
   }, [varient]);
+
+  const togglePassword = useCallback(() => {
+    if (passwordVisiblity === "password") {
+      setPasswordVisiblity("text");
+    } else {
+      setPasswordVisiblity("password");
+    }
+  }, [passwordVisiblity]);
 
   const {
     register,
@@ -150,13 +162,28 @@ export default function AuthForm() {
               errors={errors}
               type="email"
             />
-            <Input
-              label="Password"
-              register={register}
-              id="password"
-              errors={errors}
-              type="password"
-            />
+            <div className="relative">
+              <Input
+                label="Password"
+                register={register}
+                id="password"
+                errors={errors}
+                type={passwordVisiblity === "password" ? "password" : "text"}
+              />
+              {passwordVisiblity === "password" ? (
+                <HiEye
+                  size={22}
+                  className="text-sky-500 absolute right-2 bottom-[5px] "
+                  onClick={togglePassword}
+                />
+              ) : (
+                <HiEyeOff
+                  size={22}
+                  className="text-sky-500 absolute right-2 bottom-[5px] "
+                  onClick={togglePassword}
+                />
+              )}
+            </div>
             <div>
               <Button type="submit" disabled={isLoading}>
                 {varient === "LOGIN" ? "Sign In" : "Register"}

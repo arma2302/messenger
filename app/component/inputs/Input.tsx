@@ -1,7 +1,8 @@
 "use client";
-import React from "react";
+import React, { useState } from "react";
 import clsx from "clsx";
 import { FieldErrors, FieldValues, UseFormRegister } from "react-hook-form";
+import { HiEye } from "react-icons/hi";
 
 interface Inputprops {
   label: string;
