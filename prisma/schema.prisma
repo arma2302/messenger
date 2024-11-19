@@ -17,7 +17,7 @@ model User {
   id               String         @id @default(auto()) @map("_id") @db.ObjectId
   name             String?
   email            String?        @unique
-  emailVarified    DateTime?
+  emailVerified    DateTime?
   image            String?
   hashedPassword   String?
   createdAt        DateTime       @default(now())
@@ -39,7 +39,7 @@ model Account {
   refresh_token     String? @db.String
   expires_at        Int?
   token_type        String?
-  scopes            String?
+  scope             String?
   access_token      String? @db.String
   id_token          String? @db.String
   session_state     String?

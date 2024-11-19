@@ -84,16 +84,40 @@ export default function AuthForm() {
     }
   };
 
+  // const socialActions = (action: string) => {
+  //   setLoading(true);
+  //   console.log("social action ", action);
+
+  //   signIn(action, { redirect: false })
+  //     .then((callback) => {
+  //       if (callback?.error) {
+  //         return toast.error("Error logging in with " + action);
+  //       }
+  //       if (callback?.ok && !callback.error) {
+  //         return toast.success("Logged In with " + action);
+  //       }
+  //     })
+  //     .finally(() => {
+  //       setLoading(false);
+  //     });
+  // };
   const socialActions = (action: string) => {
     setLoading(true);
+    console.log("social action ", action);
+
     signIn(action, { redirect: false })
       .then((callback) => {
+        console.log("callback response", callback); // Log the full callback response
         if (callback?.error) {
           return toast.error("Error logging in with " + action);
         }
         if (callback?.ok && !callback.error) {
           return toast.success("Logged In with " + action);
         }
+      })
+      .catch((error) => {
+        console.error("SignIn error:", error); // Log any errors
+        toast.error("Unexpected error: " + error.message);
       })
       .finally(() => {
         setLoading(false);
