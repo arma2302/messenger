@@ -95,10 +95,13 @@ import { NextResponse } from "next/server";
 import prisma from "@/app/libs/prismadb";
 import getCurrentuser from "@/app/actions/getCurrentUser";
 import { pusherServer } from "@/app/libs/pusher";
+import formidable from "formidable";
 
 export async function POST(request: Request) {
   const body = await request.json();
-  const { message, image, conversationId } = body;
+  const { message, image, conversationId, audio } = body;
+
+  console.log(body);
 
   const currentUser = await getCurrentuser();
 
@@ -112,6 +115,7 @@ export async function POST(request: Request) {
       data: {
         body: message,
         image: image,
+        audio: audio,
         conversation: {
           connect: { id: conversationId },
         },

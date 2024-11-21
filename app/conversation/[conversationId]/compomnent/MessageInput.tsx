@@ -1,4 +1,4 @@
-import React from "react";
+import React, { ForwardedRef } from "react";
 import { FieldValues, UseFormRegister } from "react-hook-form";
 
 interface MessageInputProps {

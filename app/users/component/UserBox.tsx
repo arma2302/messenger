@@ -22,7 +22,7 @@ const UserBox: React.FC<UserBoxProps> = ({ data }) => {
       .post("/api/conversations", { userId: data.id })
       .then((data) => {
         console.log("...");
-
+        setIsLoading(true);
         router.push(`/conversation/${data.data.id}`);
       })
       .finally(() => {

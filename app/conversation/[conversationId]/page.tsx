@@ -26,7 +26,7 @@ const ConversationId = async ({ params }: { params: IParams }) => {
     );
   }
   return (
-    <div className="lg:pl-96 h-full">
+    <div className="lg:pl-80 h-full">
       <div className="h-full flex flex-col">
         <Header convo={conversation} />
         <div className="px-6 h-full flex flex-col justify-between">

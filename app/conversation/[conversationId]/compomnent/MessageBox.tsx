@@ -6,7 +6,7 @@ import clsx from "clsx";
 import { format } from "date-fns";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import ImageModal from "./ImageModal";
 
 interface MessageBoxProps {
@@ -16,6 +16,8 @@ interface MessageBoxProps {
 const MessageBox: React.FC<MessageBoxProps> = ({ data, isLast }) => {
   const session = useSession();
   const [isImageModalOpen, setImageModalOpen] = useState(false);
+  const [isAudioPlaying, setAudioPlaying] = useState(false);
+  const audioRef = useRef<HTMLAudioElement | null>(null); // Reference for the audio element
   const isOwn = session.data?.user?.email === data?.sender?.email;
   const seenList = (data.seen || [])
     .filter((user) => user.email !== data?.sender?.email)
@@ -28,8 +30,21 @@ const MessageBox: React.FC<MessageBoxProps> = ({ data, isLast }) => {
   const message = clsx(
     "text-sm w-fit overflow-hidden",
     isOwn ? "bg-sky-500 text-white" : "bg-gray-100",
-    data.image ? "rounded-md p-0" : "rounded-full py-2 px-3"
+    data.image ? "rounded-md p-0" : "rounded-full py-2 px-3",
+    data.audio && "bg-transparent rounded-md"
   );
+  // // Toggle play/pause
+  // const toggleAudio = () => {
+  //   if (audioRef.current) {
+  //     if (isAudioPlaying) {
+  //       audioRef.current.pause();
+  //     } else {
+  //       audioRef.current.play();
+  //     }
+  //     setAudioPlaying(!isAudioPlaying);
+  //   }
+  // };
+  console.log(data.audio, "audio files in msg box compoment");
 
   return (
     <>
@@ -59,6 +74,13 @@ const MessageBox: React.FC<MessageBoxProps> = ({ data, isLast }) => {
                 className="object-cover translate transition hover:scale-110"
                 src={data.image}
               ></Image>
+            ) : data.audio ? (
+              <div className="flex items-center gap-2">
+                {/* <button className="px-3 py-1 text-sm text-white bg-blue-500 rounded-full">
+                  {isAudioPlaying ? "Pause" : "Play"}
+                </button> */}
+                <audio src={data.audio} controls />
+              </div>
             ) : (
               <div>{data.body}</div>
             )}

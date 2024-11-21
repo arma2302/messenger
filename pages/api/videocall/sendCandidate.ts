@@ -11,6 +11,7 @@ export default async function handler(
     try {
       // Access the request body directly (no need to use .json())
       const { convoId, candidate } = req.body;
+      console.log(req.body, "body");
 
       // Trigger Pusher to send the ICE candidate to the other user
       await pusherServer.trigger(`call-${convoId}`, "candidate", { candidate });

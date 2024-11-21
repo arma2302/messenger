@@ -6,6 +6,7 @@ import axios from "axios";
 import MessageBox from "./MessageBox";
 import { pusherClient } from "@/app/libs/pusher";
 import { find } from "lodash";
+import ActiveStatus from "@/app/component/ActiveStatus";
 
 interface BodyProps {
   msgs: FullMessageType[];
@@ -85,6 +86,7 @@ const Body: React.FC<BodyProps> = ({ msgs }) => {
   }, [conversationId]);
   return (
     <div className="flex-1 overflow-y-auto">
+      <ActiveStatus />
       {messages.map((msg, i) => {
         return (
           <MessageBox

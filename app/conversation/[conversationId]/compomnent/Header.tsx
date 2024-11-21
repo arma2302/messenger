@@ -11,6 +11,7 @@ import AvatarGroup from "@/app/component/AvatarGroup";
 import useActiceUserList from "@/app/hooks/useActiveUserList";
 import { HiCamera, HiVideoCamera } from "react-icons/hi";
 import VideoCall from "./VideoCall";
+import ActiveStatus from "@/app/component/ActiveStatus";
 
 interface HeaderProps {
   convo: Conversation & {
@@ -44,6 +45,8 @@ const Header: React.FC<HeaderProps> = ({ convo }) => {
 
   return (
     <>
+      {" "}
+      <ActiveStatus />
       {videoCallOpen && <VideoCall convo={convo} />}
       <ProfileDrawer
         isOpen={drawerOpen}

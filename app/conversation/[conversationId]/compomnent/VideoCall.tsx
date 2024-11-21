@@ -33,6 +33,7 @@ const VideoCall: React.FC<VideoCallProps> = ({ convo }) => {
     // Listen for offer event
     channel.bind("offer", (data: { offer: RTCSessionDescriptionInit }) => {
       setIncomingOffer(data.offer);
+      console.log(data, " offer enevt data");
       setCallStatus("Incoming");
     });
 
@@ -67,41 +68,12 @@ const VideoCall: React.FC<VideoCallProps> = ({ convo }) => {
         if (localVideoRef.current) {
           localVideoRef.current.srcObject = stream; // Display local video stream
         }
+        console.log("video of the sender user");
       })
       .catch((err) => {
         console.error("Error getting user media", err);
       });
   }, []);
-
-  const createPeerConnection = () => {
-    const pc = new RTCPeerConnection({
-      iceServers: [{ urls: "stun:stun.l.google.com:19302" }],
-    });
-
-    // Handle ICE candidates
-    pc.onicecandidate = (event) => {
-      if (event.candidate) {
-        sendCandidateToServer(event.candidate);
-      }
-    };
-
-    // Handle remote track (incoming media from the other user)
-    pc.ontrack = (event) => {
-      setRemoteStream(event.streams[0]);
-      if (remoteVideoRef.current) {
-        remoteVideoRef.current.srcObject = event.streams[0]; // Display remote video stream
-      }
-    };
-
-    // Add tracks from local stream to peer connection
-    if (localStream) {
-      localStream.getTracks().forEach((track) => {
-        pc.addTrack(track, localStream);
-      });
-    }
-
-    return pc;
-  };
 
   const sendOfferToServer = (offer: RTCSessionDescriptionInit) => {
     axios
@@ -144,17 +116,21 @@ const VideoCall: React.FC<VideoCallProps> = ({ convo }) => {
         console.error("Error sending candidate:", error);
       });
   };
-
   const startCall = () => {
     setCallStatus("Outgoing");
+
+    // Create the PeerConnection
     const pc = createPeerConnection();
     setPeerConnection(pc);
 
+    // Create an offer
     pc.createOffer()
       .then((offer) => {
+        // Set the local description (the offer)
         return pc.setLocalDescription(offer);
       })
       .then(() => {
+        // Send the offer to the server
         sendOfferToServer(pc.localDescription as RTCSessionDescriptionInit);
       })
       .catch((error) => {
@@ -162,12 +138,59 @@ const VideoCall: React.FC<VideoCallProps> = ({ convo }) => {
       });
   };
 
+  const createPeerConnection = () => {
+    const iceConfiguration = {
+      iceServers: [
+        {
+          urls: [
+            "stun:stun1.l.google.com:19302",
+            "stun:stun3.l.google.com:19302",
+          ],
+        },
+      ],
+    };
+
+    const pc = new RTCPeerConnection(iceConfiguration);
+
+    console.log("connecttion created");
+
+    // Listen for ICE candidates and send them to the server
+    pc.onicecandidate = (event) => {
+      console.log(event, "ice event");
+
+      if (event.candidate) {
+        sendCandidateToServer(event.candidate);
+      }
+      console.log("candided set");
+    };
+
+    // Handle incoming remote tracks
+    pc.ontrack = (event) => {
+      setRemoteStream(event.streams[0]);
+      if (remoteVideoRef.current) {
+        remoteVideoRef.current.srcObject = event.streams[0];
+      }
+      console.log("send offer to  other user");
+    };
+
+    // Add local stream tracks to the connection once we have it
+    if (localStream) {
+      localStream.getTracks().forEach((track) => {
+        pc.addTrack(track, localStream);
+      });
+    }
+
+    return pc;
+  };
+
   const answerCall = (offer: RTCSessionDescriptionInit) => {
     const pc = createPeerConnection();
     setPeerConnection(pc);
 
     pc.setRemoteDescription(new RTCSessionDescription(offer))
-      .then(() => pc.createAnswer())
+      .then(() => {
+        return pc.createAnswer();
+      })
       .then((answer) => {
         return pc.setLocalDescription(answer);
       })

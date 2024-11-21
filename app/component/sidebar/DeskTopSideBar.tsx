@@ -12,6 +12,8 @@ interface DeskTopSideBarProps {
 
 const DeskTopSideBar: React.FC<DeskTopSideBarProps> = ({ currentuser }) => {
   const routes = useRoutes();
+  console.log(routes, "routes");
+
   const [isOpen, setIsOpen] = useState(false);
   console.log(currentuser);
 
