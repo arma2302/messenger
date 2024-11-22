@@ -7,6 +7,7 @@ import MessageBox from "./MessageBox";
 import { pusherClient } from "@/app/libs/pusher";
 import { find } from "lodash";
 import ActiveStatus from "@/app/component/ActiveStatus";
+import OneSignal from "react-onesignal";
 
 interface BodyProps {
   msgs: FullMessageType[];
@@ -16,6 +17,10 @@ const Body: React.FC<BodyProps> = ({ msgs }) => {
   const [messages, setMessages] = useState(msgs);
   const bottomRef = useRef<HTMLDivElement>(null);
   const { conversationId } = useConversation();
+
+  useEffect(() => {
+    console.log(OneSignal.User.PushSubscription.id, "id");
+  }, []);
 
   // useEffect(() => {
   //   pusherClient.subscribe(conversationId.toString());

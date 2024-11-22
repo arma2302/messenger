@@ -12,6 +12,7 @@ import { signIn, useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import LoadingModal from "@/app/component/LoadingModal";
 import { HiEye, HiEyeOff } from "react-icons/hi";
+import OneSignal from "react-onesignal";
 
 export default function AuthForm() {
   const session = useSession();
@@ -31,6 +32,7 @@ export default function AuthForm() {
       setLoading(false);
     };
   }, [session?.status, router]);
+
   const togglevarient = useCallback(() => {
     if (varient === "LOGIN") {
       setVarient("REGISTER");

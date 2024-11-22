@@ -5,6 +5,9 @@
     "noEmit": true,
     "isolatedModules": true,
     "incremental": true,
+
+    "typeRoots": ["./node_modules/@types", "./types"],
+
     "plugins": [
       {
         "name": "next"
@@ -29,7 +32,9 @@
     "**/*.ts",
     "**/*.tsx",
     ".next/types/**/*.ts",
-    "next.config.js"
+    "next.config.js",
+    "app/(site)/Component/NotificationContext.js",
+    "app/users/page.jsx"
   ],
   "exclude": ["node_modules"]
 }

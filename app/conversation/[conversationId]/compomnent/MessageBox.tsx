@@ -17,7 +17,7 @@ const MessageBox: React.FC<MessageBoxProps> = ({ data, isLast }) => {
   const session = useSession();
   const [isImageModalOpen, setImageModalOpen] = useState(false);
   const [isAudioPlaying, setAudioPlaying] = useState(false);
-  const audioRef = useRef<HTMLAudioElement | null>(null); // Reference for the audio element
+  const audioRef = useRef<HTMLAudioElement | null>(null);
   const isOwn = session.data?.user?.email === data?.sender?.email;
   const seenList = (data.seen || [])
     .filter((user) => user.email !== data?.sender?.email)

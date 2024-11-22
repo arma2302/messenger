@@ -4,6 +4,7 @@ import EmptyState from "@/app/component/EmptyState";
 import Header from "./compomnent/Header";
 import Body from "./compomnent/Body";
 import Form from "./compomnent/Form";
+import { useEffect } from "react";
 
 interface IParams {
   conversationId: string;
@@ -31,7 +32,7 @@ const ConversationId = async ({ params }: { params: IParams }) => {
         <Header convo={conversation} />
         <div className="px-6 h-full flex flex-col justify-between">
           <Body msgs={messages} />
-          <Form />
+          <Form convo={conversation} />
         </div>
       </div>
     </div>

@@ -7,13 +7,24 @@ import { HiMicrophone, HiPaperAirplane, HiPhoto } from "react-icons/hi2";
 import MessageInput from "./MessageInput";
 import { CldUploadButton } from "next-cloudinary";
 import { HiEmojiHappy, HiStop, HiTrash } from "react-icons/hi";
-import { useRef, useState, useEffect } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import data from "@emoji-mart/data";
 import Picker from "@emoji-mart/react";
 import Audio from "./Audio";
+import useOtherUser from "@/app/hooks/useOtherUsers";
+import { Conversation, User } from "@prisma/client";
+import OneSignal from "react-onesignal";
 
-const Form2 = () => {
+interface FormProps {
+  convo: Conversation & {
+    users: User[];
+  };
+}
+
+const Form2: React.FC<FormProps> = ({ convo }) => {
   const { conversationId } = useConversation();
+  const otherUser = useOtherUser(convo);
+
   const {
     handleSubmit,
     register,
@@ -34,8 +45,15 @@ const Form2 = () => {
 
   // Handle message submit (text)
   const onSubmit: SubmitHandler<FieldValues> = (data) => {
+    console.log(data, "DTAA");
+
     setValue("message", "", { shouldValidate: true });
-    axios.post("/api/messages", { ...data, conversationId: conversationId });
+    axios.post("/api/messages", {
+      ...data,
+      conversationId: conversationId,
+      userId: otherUser.id,
+    });
+
     setShowEmojiPicker(false);
   };
 
@@ -43,6 +61,7 @@ const Form2 = () => {
     axios.post("/api/messages", {
       image: result?.info?.secure_url,
       conversationId: conversationId,
+      userId: otherUser.id,
     });
     console.log("Image upload button clicked");
     console.log(result?.info?.secure_url, "img url");
@@ -101,6 +120,7 @@ const Form2 = () => {
         await axios.post("/api/messages", {
           audio: cloudinaryUrl,
           conversationId: conversationId,
+          userId: otherUser.id,
         });
         console.log("Voice note sent successfully!");
         setAudioUrl(null); // Clear audio URL after sending
