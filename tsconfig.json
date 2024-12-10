@@ -34,7 +34,8 @@
     ".next/types/**/*.ts",
     "next.config.js",
     "app/(site)/Component/NotificationContext.js",
-    "app/users/page.jsx"
+    "app/users/page.jsx",
+    "app/users/_document.js"
   ],
   "exclude": ["node_modules"]
 }

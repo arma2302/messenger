@@ -3,6 +3,7 @@ import "./globals.css";
 import ToasterContext from "./context/ToastContext";
 import AuthContext from "./context/AuthContext";
 import ActiveStatus from "./component/ActiveStatus";
+import AgoraContext from "./context/AgoraContextProvider";
 
 export const metadata: Metadata = {
   title: "Messenger Clone",
@@ -18,9 +19,11 @@ export default function RootLayout({
     <html lang="en">
       <body>
         <AuthContext>
-          <ToasterContext />
-          <ActiveStatus />
-          {children}
+          <AgoraContext>
+            <ToasterContext />
+            <ActiveStatus />
+            {children}
+          </AgoraContext>
         </AuthContext>
       </body>
     </html>

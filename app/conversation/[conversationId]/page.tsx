@@ -4,7 +4,6 @@ import EmptyState from "@/app/component/EmptyState";
 import Header from "./compomnent/Header";
 import Body from "./compomnent/Body";
 import Form from "./compomnent/Form";
-import { useEffect } from "react";
 
 interface IParams {
   conversationId: string;
@@ -35,6 +34,7 @@ const ConversationId = async ({ params }: { params: IParams }) => {
           <Form convo={conversation} />
         </div>
       </div>
+      <div></div>
     </div>
   );
 };

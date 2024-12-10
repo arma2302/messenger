@@ -138,15 +138,6 @@ export async function POST(request: Request) {
       },
     });
 
-    if (!otherUser?.oneSignalPlayerId) {
-      console.log("Other user has turrend off the notification");
-    }
-
-    await sendNotification(
-      otherUser?.oneSignalPlayerId,
-      "You have a new message!"
-    );
-
     // Update the conversation with the new message
     const updatedConversation = await prisma.conversation.update({
       where: { id: conversationId },
@@ -183,26 +174,3 @@ export async function POST(request: Request) {
     return new NextResponse("error", { status: 500 });
   }
 }
-//  Function to send notification to OneSignal
-const sendNotification = async (playerId: any, message: string) => {
-  try {
-    const response = await axios.post(
-      "https://onesignal.com/api/v1/notifications",
-      {
-        app_id: "fe053631-7865-497a-b4a6-fa17d4a00c19", // Replace with your OneSignal App ID
-        include_player_ids: [playerId], // The receiver's OneSignal Player ID
-        contents: { en: message }, // Notification message
-      },
-      {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Basic os_v2_app_7yctmmlymvexvnfg7il5jiamdfwtorl2roae665mdhzlmqcasbiofzpm3obhkshd2rlgfgv4ipz4wpip7lpuy6e54ucucy4xynakjvy`, // Replace with your OneSignal REST API Key
-        },
-      }
-    );
-    console.log("Notification sent:", response.data);
-  } catch (error) {
-    console.error("Error sending notification:", error);
-    throw new Error("Error sending notification");
-  }
-};

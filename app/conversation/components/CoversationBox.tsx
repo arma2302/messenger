@@ -51,6 +51,9 @@ const CoversationBox: React.FC<CoversationBoxProps> = ({ data, selected }) => {
     if (lastMessage?.body) {
       return lastMessage.body;
     }
+    if (lastMessage?.audio) {
+      return "Sent a Voice Note";
+    }
     return "Started a Conversation";
   }, [lastMessage]);
 

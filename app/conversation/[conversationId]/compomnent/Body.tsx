@@ -89,6 +89,17 @@ const Body: React.FC<BodyProps> = ({ msgs }) => {
       pusherClient.unbind("message:update", updateMessaheHandler);
     };
   }, [conversationId]);
+
+  // useEffect(() => {
+  //   pusherClient.bind("callInvitation:new", function (data: any) {
+  //     console.log(data, "notification data");
+  //     alert(data.invitaion);
+  //   });
+
+  //   return () => {
+  //     pusherClient.unsubscribe("call-channel");
+  //   };
+  // }, []);
   return (
     <div className="flex-1 overflow-y-auto">
       <ActiveStatus />
