@@ -19,11 +19,9 @@ export default function RootLayout({
     <html lang="en">
       <body>
         <AuthContext>
-          <AgoraContext>
-            <ToasterContext />
-            <ActiveStatus />
-            {children}
-          </AgoraContext>
+          <ToasterContext />
+          <ActiveStatus />
+          {children}
         </AuthContext>
       </body>
     </html>
