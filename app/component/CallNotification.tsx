@@ -18,14 +18,14 @@ const CallInvitation: React.FC<InvitationProps> = ({ data }) => {
     // pusherServer.trigger(data.caller.id, "answer:new", "accept");
     // await SendAnswerToCaller("accept", data.caller.id!);
     axios.post("/api/sendAnswer", { caller: data.caller, answer: "accept" });
-    route.push(`${pathname}/VideoCall`);
+    route.replace(`/VideoCall`);
   };
   const onDecline = () => {
     axios.post("/api/sendAnswer", { caller: data.caller, answer: "reject" });
     pusherClient.unsubscribe(reciverId);
     // SendAnswerToCaller("reject", data.caller.id!);
     // pusherServer.trigger(data.caller.id, "answer:new", "reject");
-    route.refresh();
+    route.back();
   };
   return (
     <div className="flex items-center justify-center bg-gray-800 bg-opacity-60 fixed inset-0 z-50">
@@ -47,18 +47,18 @@ const CallInvitation: React.FC<InvitationProps> = ({ data }) => {
             <p className="text-gray-600">is calling you...</p>
           </div>
         </div>
-        <div className="mt-6 flex justify-around space-x-4">
+        <div className="mt-6 flex justify-between space-x-4 items-center">
           {/* Accept Button */}
           <button
             onClick={onAccept}
-            className="bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-400"
+            className="bg-blue-500 w-1/2 text-white py-2 px-4 rounded-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-400"
           >
             Accept
           </button>
           {/* Decline Button */}
           <button
             onClick={onDecline}
-            className="bg-red-500 text-white py-2 px-4 rounded-lg hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-400"
+            className="bg-red-500 w-1/2 text-white py-2 px-4 rounded-lg hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-400"
           >
             Decline
           </button>

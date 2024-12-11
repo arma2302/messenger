@@ -3,6 +3,8 @@ import SideBar from "../component/sidebar/SideBar";
 import ConversationList from "./components/ConversationList";
 import getConversations from "../actions/getConversations";
 import getusers from "../actions/getUsers";
+import getCurrentuser from "../actions/getCurrentUser";
+import CallContext from "../context/CallContext";
 
 export default async function CoverversationLayout({
   children,
@@ -11,6 +13,7 @@ export default async function CoverversationLayout({
 }) {
   const coversations = await getConversations();
   const users = await getusers();
+  const currentUser = await getCurrentuser();
   return (
     <SideBar>
       <div className="h-full">
@@ -21,6 +24,7 @@ export default async function CoverversationLayout({
         ></ConversationList>
         {children}
       </div>
+      <CallContext currentUser={currentUser!} />
     </SideBar>
   );
 }

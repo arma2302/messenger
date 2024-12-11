@@ -30,19 +30,19 @@ const Header: React.FC<HeaderProps> = ({ convo }) => {
   const [incomingCall, setIncomingCall] = useState(false);
   const [data, setData] = useState("");
 
-  useEffect(() => {
-    pusherClient.subscribe(currentUser?.id!);
-    pusherClient.bind("callInvitation:new", function (data: any) {
-      console.log(data, "notification data");
-      setData(data);
-      setIncomingCall(true);
-    });
+  // useEffect(() => {
+  //   pusherClient.subscribe(currentUser?.id!);
+  //   pusherClient.bind("callInvitation:new", function (data: any) {
+  //     console.log(data, "notification data");
+  //     setData(data);
+  //     setIncomingCall(true);
+  //   });
 
-    return () => {
-      pusherClient.unsubscribe(currentUser?.id!);
-      pusherClient.unbind("callInvitation:new");
-    };
-  }, [currentUser?.id]);
+  //   return () => {
+  //     pusherClient.unsubscribe(currentUser?.id!);
+  //     pusherClient.unbind("callInvitation:new");
+  //   };
+  // }, [currentUser?.id]);
 
   const user = convo.users.filter((user) => user.id !== otherUser.id)[0];
 
@@ -74,7 +74,7 @@ const Header: React.FC<HeaderProps> = ({ convo }) => {
   const params = useParams();
   const Videocall = async () => {
     await axios
-      .post("/api/userDetails", { params })
+      .post("/api/videocall", { params })
       .then((res) => {
         console.log(res.data);
         return res.data;
@@ -95,7 +95,7 @@ const Header: React.FC<HeaderProps> = ({ convo }) => {
     pusherClient.bind("answer:new", (data: string) => {
       console.log(data, "data");
       if (data === "accept") {
-        route.push(`${pathname}/VideoCall`);
+        route.replace(`/VideoCall`);
       }
       if (data === "reject") {
         alert("Call declined");
