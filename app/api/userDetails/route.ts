@@ -21,7 +21,7 @@ export async function POST(req: Request) {
       reciver: otherUser,
       msg: `${currentUser.name} is calling You`,
     };
-    await pusherServer.trigger(otherUser?.id!, "callInvitation:new", newInvite);
+
     return NextResponse.json({
       currentUser: currentUser,
       otherUser: otherUser,

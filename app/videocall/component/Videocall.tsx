@@ -10,18 +10,11 @@ import {
   useRemoteUsers,
 } from "agora-rtc-react";
 import React, { useEffect, useState } from "react";
-import { User } from "@prisma/client";
-import { HiCamera, HiMicrophone, HiPhone } from "react-icons/hi2";
-import { useParams, useRouter } from "next/navigation";
-import AgoraRTM from "agora-rtm-sdk";
+import { HiMicrophone, HiPhone } from "react-icons/hi2";
+import { useRouter } from "next/navigation";
+import { BsCameraVideo, BsCameraVideoOff, BsMicMute } from "react-icons/bs";
 
 export const VcPage = () => {
-  useEffect(() => {});
-  const { RTM } = AgoraRTM;
-  const [currentUser, setCurrentUser] = useState<User | null>();
-  const [otherUser, setOtherUser] = useState<User | null>();
-  const params = useParams();
-
   const [appId, setAppId] = useState("f9d0855cb9ca4c9896d50f231e32c9de");
   const [channel, setChannel] = useState("vcroom");
   const [token, setToken] = useState(
@@ -52,7 +45,6 @@ export const VcPage = () => {
   };
 
   return (
-    // <AgoraRTCProvider client={client}>
     <div className="w-full bg-gray-100 h-full flex flex-col justify-center items-center py-3 ">
       {/* Video Container */}
       <div className="w-full  flex flex-col sm:flex-row justify-center items-center gap-4 sm:gap-8 p-4">
@@ -83,7 +75,7 @@ export const VcPage = () => {
                 user={user}
               >
                 <div className="absolute top-2 left-2 text-white text-sm bg-gray-800 bg-opacity-60 px-2 py-1 rounded-md">
-                  {otherUser?.name || "OtherUser"}
+                  OtherUser
                 </div>
               </RemoteUser>
             ))}
@@ -100,7 +92,8 @@ export const VcPage = () => {
           aria-label={micOn ? "Mute Microphone" : "Unmute Microphone"}
           onClick={() => setMic((prev) => !prev)}
         >
-          <HiMicrophone size={36} />
+          {" "}
+          {micOn ? <HiMicrophone size={36} /> : <BsMicMute size={36} />}
         </button>
 
         <button
@@ -110,7 +103,11 @@ export const VcPage = () => {
           aria-label={cameraOn ? "Turn Off Camera" : "Turn On Camera"}
           onClick={() => setCamera((prev) => !prev)}
         >
-          <HiCamera size={36} />
+          {cameraOn ? (
+            <BsCameraVideo size={36} />
+          ) : (
+            <BsCameraVideoOff size={36} />
+          )}
         </button>
 
         <button
@@ -124,7 +121,6 @@ export const VcPage = () => {
         </button>
       </div>
     </div>
-    // </AgoraRTCProvider>
   );
 };
 

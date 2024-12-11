@@ -7,7 +7,6 @@ export async function POST(req: Request) {
   try {
     const body = req.json();
     const { params } = await body;
-
     const conversation = await getConversationById(params.conversationId);
     const currentUser = await getCurrentuser();
     if (!currentUser?.id || !currentUser?.email) {

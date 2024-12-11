@@ -4,6 +4,7 @@ import EmptyState from "@/app/component/EmptyState";
 import Header from "./compomnent/Header";
 import Body from "./compomnent/Body";
 import Form from "./compomnent/Form";
+import getCurrentuser from "@/app/actions/getCurrentUser";
 
 interface IParams {
   conversationId: string;
@@ -15,6 +16,7 @@ const ConversationId = async ({ params }: { params: IParams }) => {
 
   const messages = await getMessages(conversationId);
   console.log("all messages", messages);
+  const currentUser = await getCurrentuser();
 
   if (!conversation) {
     return (
@@ -30,7 +32,7 @@ const ConversationId = async ({ params }: { params: IParams }) => {
       <div className="h-full flex flex-col">
         <Header convo={conversation} />
         <div className="px-6 h-full flex flex-col justify-between">
-          <Body msgs={messages} />
+          <Body msgs={messages} currentUser={currentUser!} />
           <Form convo={conversation} />
         </div>
       </div>

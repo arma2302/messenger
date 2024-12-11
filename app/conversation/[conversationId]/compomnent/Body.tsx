@@ -8,15 +8,19 @@ import { pusherClient } from "@/app/libs/pusher";
 import { find } from "lodash";
 import ActiveStatus from "@/app/component/ActiveStatus";
 import OneSignal from "react-onesignal";
+import { useParams } from "next/navigation";
+import { User } from "@prisma/client";
 
 interface BodyProps {
   msgs: FullMessageType[];
+  currentUser: User;
 }
 
-const Body: React.FC<BodyProps> = ({ msgs }) => {
+const Body: React.FC<BodyProps> = ({ msgs, currentUser }) => {
   const [messages, setMessages] = useState(msgs);
   const bottomRef = useRef<HTMLDivElement>(null);
   const { conversationId } = useConversation();
+  const params = useParams();
 
   useEffect(() => {
     console.log(OneSignal.User.PushSubscription.id, "id");
@@ -52,7 +56,7 @@ const Body: React.FC<BodyProps> = ({ msgs }) => {
   }, [conversationId]);
 
   useEffect(() => {
-    pusherClient.subscribe(conversationId.toString());
+    pusherClient.subscribe("messege-channel");
     bottomRef.current?.scrollIntoView();
 
     const messageHandler = (message: FullMessageType) => {
