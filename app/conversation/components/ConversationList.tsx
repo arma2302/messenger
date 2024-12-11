@@ -24,9 +24,7 @@ const ConversationList: React.FC<ConversationListProps> = ({
   const [isModalOpen, setIsModalOpen] = useState(false);
   const session = useSession();
   const { conversationId, isOpen } = useConversation();
-  const pusherKey = useMemo(() => {
-    return session.data?.user?.email;
-  }, [session.data?.user?.email]);
+  const pusherKey = session.data?.user?.email;
 
   useEffect(() => {
     if (!pusherKey) {
@@ -71,7 +69,7 @@ const ConversationList: React.FC<ConversationListProps> = ({
       pusherClient.unbind("conversation:update", updateHadnler);
       pusherClient.unbind("conversation:remove", removeHandler);
     };
-  }, [pusherKey, conversationId]);
+  }, [pusherKey]);
   return (
     <>
       <GroupChatModal

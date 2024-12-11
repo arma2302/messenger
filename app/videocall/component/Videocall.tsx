@@ -16,26 +16,11 @@ import { useParams, useRouter } from "next/navigation";
 import AgoraRTM from "agora-rtm-sdk";
 
 export const VcPage = () => {
+  useEffect(() => {});
   const { RTM } = AgoraRTM;
   const [currentUser, setCurrentUser] = useState<User | null>();
   const [otherUser, setOtherUser] = useState<User | null>();
   const params = useParams();
-
-  // useEffect(() => {
-  //   axios
-  //     .post("/api/userDetails", { params })
-  //     .then((res) => {
-  //       console.log(res.data);
-  //       return res.data;
-  //     })
-  //     .then((data) => {
-  //       setCurrentUser(data.currentUser);
-  //       setOtherUser(data.otherUser);
-  //     })
-  //     .catch((error) => {
-  //       console.log(error, "error fetching user details");
-  //     });
-  // }, []);
 
   const [appId, setAppId] = useState("f9d0855cb9ca4c9896d50f231e32c9de");
   const [channel, setChannel] = useState("vcroom");
