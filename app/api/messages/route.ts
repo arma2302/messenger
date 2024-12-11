@@ -38,6 +38,7 @@ export async function POST(request: Request) {
         sender: true,
       },
     });
+    await pusherServer.trigger("messege-channel", "message:new", newMsg);
 
     const otherUser = await prisma.user.findUnique({
       where: {
@@ -66,7 +67,6 @@ export async function POST(request: Request) {
 
     // Send the new message to the conversation channel for real-time updates
     // await pusherServer.trigger(conversationId, "message:new", newMsg);
-    await pusherServer.trigger("messege-channel", "message:new", newMsg);
     const lastMessage =
       updatedConversation.messages[updatedConversation.messages.length - 1];
     // Send the updated conversation state to all users (including the last message)
