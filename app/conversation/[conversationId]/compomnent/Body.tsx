@@ -20,11 +20,6 @@ const Body: React.FC<BodyProps> = ({ msgs, currentUser }) => {
   const [messages, setMessages] = useState(msgs);
   const bottomRef = useRef<HTMLDivElement>(null);
   const { conversationId } = useConversation();
-  const params = useParams();
-
-  useEffect(() => {
-    console.log(OneSignal.User.PushSubscription.id, "id");
-  }, []);
 
   // useEffect(() => {
   //   pusherClient.subscribe(conversationId.toString());
@@ -50,18 +45,15 @@ const Body: React.FC<BodyProps> = ({ msgs, currentUser }) => {
   // }, [conversationId]);
 
   useEffect(() => {
-    console.log(messages, "body msgs");
-
     axios.post(`/api/conversations/${conversationId}/seen`);
   }, [conversationId]);
 
   useEffect(() => {
-    pusherClient.subscribe("messege-channel");
+    pusherClient.subscribe(conversationId.toString());
     bottomRef.current?.scrollIntoView();
 
     const messageHandler = (message: FullMessageType) => {
       axios.post(`/api/conversations/${conversationId}/seen`);
-
       setMessages((current) => {
         if (find(current, { id: message.id })) {
           return current;

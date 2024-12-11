@@ -38,7 +38,7 @@ export async function POST(request: Request) {
         sender: true,
       },
     });
-    await pusherServer.trigger("messege-channel", "message:new", newMsg);
+    await pusherServer.trigger(conversationId, "message:new", newMsg);
 
     const otherUser = await prisma.user.findUnique({
       where: {
