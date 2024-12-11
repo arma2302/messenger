@@ -18,7 +18,7 @@ const CallInvitation: React.FC<InvitationProps> = ({ data }) => {
     // pusherServer.trigger(data.caller.id, "answer:new", "accept");
     // await SendAnswerToCaller("accept", data.caller.id!);
     axios.post("/api/sendAnswer", { caller: data.caller, answer: "accept" });
-    route.replace(`/VideoCall`);
+    route.replace(`/videocall`);
   };
   const onDecline = () => {
     axios.post("/api/sendAnswer", { caller: data.caller, answer: "reject" });

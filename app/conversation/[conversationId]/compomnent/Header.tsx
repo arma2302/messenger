@@ -95,7 +95,7 @@ const Header: React.FC<HeaderProps> = ({ convo }) => {
     pusherClient.bind("answer:new", (data: string) => {
       console.log(data, "data");
       if (data === "accept") {
-        route.replace(`/VideoCall`);
+        route.replace(`/videocall`);
       }
       if (data === "reject") {
         alert("Call declined");
