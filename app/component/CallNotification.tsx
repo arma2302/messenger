@@ -25,7 +25,7 @@ const CallInvitation: React.FC<InvitationProps> = ({ data }) => {
     pusherClient.unsubscribe(reciverId);
     // SendAnswerToCaller("reject", data.caller.id!);
     // pusherServer.trigger(data.caller.id, "answer:new", "reject");
-    route.back();
+    route.refresh();
   };
   return (
     <div className="flex items-center justify-center bg-gray-800 bg-opacity-60 fixed inset-0 z-50">
