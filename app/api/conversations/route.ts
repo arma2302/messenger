@@ -38,10 +38,10 @@ export async function POST(request: Request) {
         },
       });
 
-      newconversation.users.map((user) => {
+      newconversation.users.forEach((user) => {
         if (user.email) {
           pusherServer.trigger(user.email, "conversation:new", newconversation);
-          console.log("group convo vreated");
+          console.log("group convo created");
         }
       });
       return NextResponse.json(newconversation);
