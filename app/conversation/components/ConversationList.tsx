@@ -15,10 +15,12 @@ import { useSession } from "next-auth/react";
 interface ConversationListProps {
   initialItems: FullConversationType[];
   users: User[];
+  currentUser: User;
 }
 const ConversationList: React.FC<ConversationListProps> = ({
   initialItems,
   users,
+  currentUser,
 }) => {
   const [items, setItems] = useState(initialItems);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -27,7 +29,7 @@ const ConversationList: React.FC<ConversationListProps> = ({
   const pusherKey = session.data?.user?.email;
 
   useEffect(() => {
-    pusherClient.subscribe(session.data?.user?.email!);
+    pusherClient.subscribe(currentUser.email!);
 
     if (!pusherKey) {
       return;
@@ -70,7 +72,7 @@ const ConversationList: React.FC<ConversationListProps> = ({
       pusherClient.unbind("conversation:update", updateHadnler);
       pusherClient.unbind("conversation:remove", removeHandler);
     };
-  }, [session.data?.user?.email]);
+  }, [currentUser]);
   return (
     <>
       <GroupChatModal

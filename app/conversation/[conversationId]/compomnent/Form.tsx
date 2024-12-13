@@ -13,7 +13,6 @@ import Picker from "@emoji-mart/react";
 import Audio from "./Audio";
 import useOtherUser from "@/app/hooks/useOtherUsers";
 import { Conversation, User } from "@prisma/client";
-import OneSignal from "react-onesignal";
 
 interface FormProps {
   convo: Conversation & {

@@ -56,6 +56,8 @@ const Body: React.FC<BodyProps> = ({ msgs, currentUser }) => {
       axios.post(`/api/conversations/${conversationId}/seen`);
       setMessages((current) => {
         if (find(current, { id: message.id })) {
+          console.log(current, "current msg in body component");
+
           return current;
         }
         return [...current, message];
@@ -105,6 +107,7 @@ const Body: React.FC<BodyProps> = ({ msgs, currentUser }) => {
             isLast={i === messages.length - 1}
             key={msg.id}
             data={msg}
+            conversationId={conversationId.toString()}
           />
         );
       })}

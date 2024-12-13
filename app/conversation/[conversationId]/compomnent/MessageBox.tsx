@@ -6,14 +6,21 @@ import clsx from "clsx";
 import { format } from "date-fns";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import ImageModal from "./ImageModal";
+import { pusherClient } from "@/app/libs/pusher";
+import { log } from "console";
 
 interface MessageBoxProps {
   data: FullMessageType;
   isLast: boolean;
+  conversationId: string;
 }
-const MessageBox: React.FC<MessageBoxProps> = ({ data, isLast }) => {
+const MessageBox: React.FC<MessageBoxProps> = ({
+  data,
+  isLast,
+  conversationId,
+}) => {
   const session = useSession();
   const [isImageModalOpen, setImageModalOpen] = useState(false);
   const [isAudioPlaying, setAudioPlaying] = useState(false);
@@ -44,7 +51,17 @@ const MessageBox: React.FC<MessageBoxProps> = ({ data, isLast }) => {
   //     setAudioPlaying(!isAudioPlaying);
   //   }
   // };
-  console.log(data.audio, "audio files in msg box compoment");
+  useEffect(() => {
+    pusherClient.subscribe(data.conversationId);
+    pusherClient.bind("message:new", (msg: FullMessageType) => {
+      if (data.conversationId === conversationId) {
+        data = msg;
+        console.log(data, "newly Created Data");
+
+        return data;
+      }
+    });
+  }, [conversationId]);
 
   return (
     <>

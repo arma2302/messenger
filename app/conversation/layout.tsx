@@ -21,6 +21,7 @@ export default async function CoverversationLayout({
         <ConversationList
           initialItems={coversations}
           users={users}
+          currentUser={currentUser!}
         ></ConversationList>
         {children}
       </div>
