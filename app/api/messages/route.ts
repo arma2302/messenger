@@ -116,9 +116,12 @@ export async function POST(request: Request) {
         sender: true,
       },
     });
+    setTimeout(() => {
+      pusherServer.trigger(conversationId, "message:new", newMsg);
+    }, 0);
 
-    // Trigger the Pusher event immediately after message creation
-    pusherServer.trigger(conversationId, "message:new", newMsg);
+    // // Trigger the Pusher event immediately after message creation
+    // pusherServer.trigger(conversationId, "message:new", newMsg);
 
     const updatedConversation = prisma.conversation.update({
       where: { id: conversationId },

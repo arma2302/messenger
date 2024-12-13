@@ -51,17 +51,17 @@ const MessageBox: React.FC<MessageBoxProps> = ({
   //     setAudioPlaying(!isAudioPlaying);
   //   }
   // };
-  useEffect(() => {
-    pusherClient.subscribe(data.conversationId);
-    pusherClient.bind("message:new", (msg: FullMessageType) => {
-      if (data.conversationId === conversationId) {
-        data = msg;
-        console.log(data, "newly Created Data");
+  // useEffect(() => {
+  //   pusherClient.subscribe(data.conversationId);
+  //   pusherClient.bind("message:new", (msg: FullMessageType) => {
+  //     if (data.conversationId === conversationId) {
+  //       data = msg;
+  //       console.log(data, "newly Created Data");
 
-        return data;
-      }
-    });
-  }, [conversationId]);
+  //       return data;
+  //     }
+  //   });
+  // }, [conversationId]);
 
   return (
     <>

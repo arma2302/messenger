@@ -53,16 +53,15 @@ const Body: React.FC<BodyProps> = ({ msgs, currentUser }) => {
     bottomRef.current?.scrollIntoView();
 
     const messageHandler = (message: FullMessageType) => {
-      axios.post(`/api/conversations/${conversationId}/seen`);
       setMessages((current) => {
-        if (find(current, { id: message.id })) {
-          console.log(current, "current msg in body component");
-
+        const existingMessage = find(current, { id: message.id });
+        if (existingMessage) {
           return current;
         }
         return [...current, message];
       });
       bottomRef.current?.scrollIntoView();
+      axios.post(`/api/conversations/${conversationId}/seen`);
     };
 
     const updateMessaheHandler = (newmsg: FullMessageType) => {
