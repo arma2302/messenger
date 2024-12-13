@@ -53,6 +53,7 @@ const Body: React.FC<BodyProps> = ({ msgs, currentUser }) => {
     bottomRef.current?.scrollIntoView();
 
     const messageHandler = (message: FullMessageType) => {
+      console.log("New message received via Pusher:", message);
       setMessages((current) => {
         const existingMessage = find(current, { id: message.id });
         if (existingMessage) {
