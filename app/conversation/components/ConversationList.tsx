@@ -26,12 +26,12 @@ const ConversationList: React.FC<ConversationListProps> = ({
   const [isModalOpen, setIsModalOpen] = useState(false);
   const session = useSession();
   const { conversationId, isOpen } = useConversation();
-  const pusherKey = session.data?.user?.email;
+  // const pusherKey = session.data?.user.;
 
   useEffect(() => {
-    pusherClient.subscribe(currentUser.email!);
+    pusherClient.subscribe(currentUser.id);
 
-    if (!pusherKey) {
+    if (!currentUser) {
       return;
     }
     const newHandler = (conversation: FullConversationType) => {
@@ -72,7 +72,7 @@ const ConversationList: React.FC<ConversationListProps> = ({
       pusherClient.unbind("conversation:update", updateHadnler);
       pusherClient.unbind("conversation:remove", removeHandler);
     };
-  }, [currentUser.email]);
+  }, [currentUser.id]);
   return (
     <>
       <GroupChatModal

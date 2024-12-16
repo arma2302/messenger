@@ -40,7 +40,7 @@ export async function POST(request: Request) {
 
       newconversation.users.forEach((user) => {
         if (user.email) {
-          pusherServer.trigger(user.email, "conversation:new", newconversation);
+          pusherServer.trigger(user.id, "conversation:new", newconversation);
           console.log("group convo created");
         }
       });
