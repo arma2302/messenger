@@ -150,8 +150,8 @@ export async function POST(request: Request) {
     const lastMessage =
       updatedConversation.messages[updatedConversation.messages.length - 1];
     // Send the updated conversation state to all users (including the last message)
-    updatedConversation.users.forEach((user) => {
-      pusherServer.trigger(user.id, "conversation:update", {
+    updatedConversation.users.map((user) => {
+      pusherServer.trigger(user.email!, "conversation:update", {
         id: conversationId,
         messages: [lastMessage], // Pass all messages
       });

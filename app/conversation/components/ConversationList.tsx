@@ -29,7 +29,7 @@ const ConversationList: React.FC<ConversationListProps> = ({
   // const pusherKey = session.data?.user.;
 
   useEffect(() => {
-    pusherClient.subscribe(currentUser.id);
+    pusherClient.subscribe(session.data?.user?.email!);
 
     if (!currentUser) {
       return;
