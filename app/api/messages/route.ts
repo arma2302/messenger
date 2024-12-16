@@ -90,12 +90,16 @@ export async function POST(request: Request) {
   const currentUser = await getCurrentuser();
 
   try {
-    // Step 1: Return early if the current user is unauthorized
-    if (!currentUser?.id || !currentUser?.email) {
-      return new NextResponse("Unauthorized data", { status: 401 });
-    }
+    // // Step 1: Return early if the current user is unauthorized
+    // if (!currentUser?.id || !currentUser?.email) {
+    //   return new NextResponse("Unauthorized data", { status: 401 });
+    // }
 
     // Step 2: Create the message and trigger Pusher as soon as possible
+    pusherServer.trigger(userId!, "notification:new", {
+      msg: message,
+      from: currentUser?.name,
+    });
     const newMsg = await prisma.message.create({
       data: {
         body: message,
@@ -119,7 +123,6 @@ export async function POST(request: Request) {
     setTimeout(() => {
       pusherServer.trigger(conversationId, "message:new", newMsg);
     }, 0);
-
     // // Trigger the Pusher event immediately after message creation
     // pusherServer.trigger(conversationId, "message:new", newMsg);
 

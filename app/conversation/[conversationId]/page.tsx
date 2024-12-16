@@ -33,7 +33,7 @@ const ConversationId = async ({ params }: { params: IParams }) => {
         <Header convo={conversation} />
         <div className="px-6 h-full flex flex-col justify-between">
           <Body msgs={messages} currentUser={currentUser!} />
-          <Form convo={conversation} />
+          <Form convo={conversation} currentUser={currentUser!} />
         </div>
       </div>
       <div></div>

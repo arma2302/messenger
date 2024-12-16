@@ -9,13 +9,15 @@ import { HiChevronLeft, HiEllipsisHorizontal, HiPhone } from "react-icons/hi2";
 import ProfileDrawer from "./ProfileDrawer";
 import AvatarGroup from "@/app/component/AvatarGroup";
 import useActiceUserList from "@/app/hooks/useActiveUserList";
-import { HiCamera, HiVideoCamera } from "react-icons/hi";
+import { HiCamera, HiSearch, HiVideoCamera } from "react-icons/hi";
 import ActiveStatus from "@/app/component/ActiveStatus";
 
 import { useParams, usePathname, useRouter } from "next/navigation";
 import { pusherClient } from "@/app/libs/pusher";
 import axios from "axios";
 import CallNotification from "@/app/component/CallNotification";
+import ConversationId from "../page";
+import SearchComponent from "./SearchComponent";
 
 interface HeaderProps {
   convo: Conversation & {
@@ -28,6 +30,7 @@ const Header: React.FC<HeaderProps> = ({ convo }) => {
   const otherUser = useOtherUser(convo);
   const currentUser = convo.users.find((user) => user.id !== otherUser.id);
   const [incomingCall, setIncomingCall] = useState(false);
+  const [searchedMsg, setSearchedMsg] = useState("");
   const [data, setData] = useState("");
 
   // useEffect(() => {
@@ -166,6 +169,7 @@ const Header: React.FC<HeaderProps> = ({ convo }) => {
           </div>
         </div>
         <div className="flex  items-center  gap-3">
+          <SearchComponent convo={convo} />
           <HiVideoCamera
             size={32}
             className="text-sky-500 cursor-pointer"

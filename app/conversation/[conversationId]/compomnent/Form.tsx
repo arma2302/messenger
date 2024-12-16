@@ -18,9 +18,10 @@ interface FormProps {
   convo: Conversation & {
     users: User[];
   };
+  currentUser: User;
 }
 
-const Form2: React.FC<FormProps> = ({ convo }) => {
+const Form2: React.FC<FormProps> = ({ convo, currentUser }) => {
   const { conversationId } = useConversation();
   const otherUser = useOtherUser(convo);
 
@@ -51,6 +52,7 @@ const Form2: React.FC<FormProps> = ({ convo }) => {
       ...data,
       conversationId: conversationId,
       userId: otherUser.id,
+      currentUser: currentUser,
     });
 
     setShowEmojiPicker(false);

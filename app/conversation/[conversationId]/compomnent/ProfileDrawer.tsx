@@ -15,6 +15,7 @@ import { IoClose, IoTrash } from "react-icons/io5";
 import ConfirmModal from "./ConfirmModal";
 import AvatarGroup from "@/app/component/AvatarGroup";
 import useActiceUserList from "@/app/hooks/useActiveUserList";
+import { HiSearch } from "react-icons/hi";
 
 interface ProfileDrawerProps {
   isOpen: boolean;
@@ -151,6 +152,7 @@ const ProfileDrawer: React.FC<ProfileDrawerProps> = ({
                                       </time>
                                     </dd>
                                   </div>
+                                  <hr />
                                 </>
                               )}
                             </dl>
