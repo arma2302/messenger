@@ -35,7 +35,7 @@ export async function DELETE(
       },
     });
 
-    existingConversation.users.forEach((user) => {
+    existingConversation.users.map((user) => {
       if (user.email) {
         pusherServer.trigger(
           user.email,
