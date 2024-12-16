@@ -126,7 +126,8 @@ export async function POST(request: Request) {
     // // Trigger the Pusher event immediately after message creation
     // pusherServer.trigger(conversationId, "message:new", newMsg);
 
-    const updatedConversation = prisma.conversation.update({
+    //     // Update the conversation with the new message
+    const updatedConversation = await prisma.conversation.update({
       where: { id: conversationId },
       data: {
         lastMessageAt: new Date(),
@@ -144,30 +145,19 @@ export async function POST(request: Request) {
       },
     });
 
-    // Step 4: Get the users for updating their channels, done asynchronously
-    const otherUser = prisma.user.findUnique({
-      where: { id: userId },
+    // Send the new message to the conversation channel for real-time updates
+    // await pusherServer.trigger(conversationId, "message:new", newMsg);
+    const lastMessage =
+      updatedConversation.messages[updatedConversation.messages.length - 1];
+    // Send the updated conversation state to all users (including the last message)
+    updatedConversation.users.map((user) => {
+      pusherServer.trigger(user.email!, "conversation:update", {
+        id: conversationId,
+        messages: [lastMessage], // Pass all messages
+      });
     });
 
-    // Step 5: After both queries resolve, send the updated conversation and trigger push notifications
-    const [conversation, otherUserDetails] = await Promise.all([
-      updatedConversation,
-      otherUser,
-    ]);
-
-    const lastMessage = conversation.messages[conversation.messages.length - 1];
-
-    // Send updated conversation state to all users in the conversation
-    await Promise.all(
-      conversation.users.map((user) => {
-        return pusherServer.trigger(user.email!, "conversation:update", {
-          id: conversationId,
-          messages: [lastMessage], // Send the last message
-        });
-      })
-    );
-
-    // Step 6: Return the newly created message as a response
+    //  Return the newly created message as a response
     return NextResponse.json(newMsg);
   } catch (error: any) {
     return new NextResponse("error", { status: 500 });
