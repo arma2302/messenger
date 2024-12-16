@@ -341,6 +341,17 @@ const Body: React.FC<BodyProps> = ({ msgs, currentUser }) => {
       );
     };
 
+    pusherClient.bind("message:new", messageHandler);
+    pusherClient.bind("message:update", updateMessageHandler);
+
+    return () => {
+      pusherClient.unsubscribe(conversationId.toString());
+      pusherClient.unbind("message:new", messageHandler);
+      pusherClient.unbind("message:update", updateMessageHandler);
+    };
+  }, [conversationId]);
+  useEffect(() => {
+    pusherClient.subscribe(currentUser.id);
     const filtermessageHandler = (value: string) => {
       setFilteredValue(value);
       setFilteredMessages(() =>
@@ -351,17 +362,12 @@ const Body: React.FC<BodyProps> = ({ msgs, currentUser }) => {
       setIsFiltered(true); // Set filter state to true
     };
 
-    pusherClient.bind("message:new", messageHandler);
-    pusherClient.bind("message:update", updateMessageHandler);
     pusherClient.bind("message:filter", filtermessageHandler);
 
     return () => {
-      pusherClient.unsubscribe(conversationId.toString());
-      pusherClient.unbind("message:new", messageHandler);
-      pusherClient.unbind("message:update", updateMessageHandler);
       pusherClient.unbind("message:filter", filtermessageHandler);
     };
-  }, [conversationId]);
+  }, [currentUser.id]);
 
   const closeFilteredMessages = () => {
     setFilteredMessages(null); // Reset filtered messages
