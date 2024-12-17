@@ -147,12 +147,13 @@ const ConversationList: React.FC<ConversationListProps> = ({
   useEffect(() => {
     pusherClient.subscribe(currentUser.email!);
 
-    if (!pusherKey) {
+    if (!currentUser) {
       return;
     }
     const newHandler = (conversation: FullConversationType) => {
       setItems((current) => {
-        if (find(current, { id: conversationId })) {
+        // Avoid adding the same conversation again
+        if (current.some((convo) => convo.id === conversation.id)) {
           return current;
         }
         return [conversation, ...current];
@@ -183,12 +184,12 @@ const ConversationList: React.FC<ConversationListProps> = ({
     pusherClient.bind("conversation:update", updateHadnler);
     pusherClient.bind("conversation:remove", removeHandler);
     return () => {
-      pusherClient.unsubscribe(pusherKey);
+      pusherClient.unsubscribe(currentUser.email!);
       pusherClient.unbind("conversation:new", newHandler);
       pusherClient.unbind("conversation:update", updateHadnler);
       pusherClient.unbind("conversation:remove", removeHandler);
     };
-  }, [currentUser]);
+  }, [currentUser.email, session]);
   return (
     <>
       <GroupChatModal
