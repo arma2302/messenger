@@ -39,8 +39,12 @@ export async function POST(request: Request) {
       });
 
       newconversation.users.forEach((user) => {
-        if (user.email) {
-          pusherServer.trigger(user.email, "conversation:new", newconversation);
+        if (user.id) {
+          pusherServer.trigger(
+            `${user.id}-newConvo`,
+            "conversation:new",
+            newconversation
+          );
           console.log("group convo created");
         }
       });
@@ -89,8 +93,12 @@ export async function POST(request: Request) {
     });
 
     newconversation.users.map((user) => {
-      if (user.email) {
-        pusherServer.trigger(user.email, "conversation:new", newconversation);
+      if (user.id) {
+        pusherServer.trigger(
+          `${user.id}-newConvo`,
+          "conversation:new",
+          newconversation
+        );
       }
     });
     return NextResponse.json(newconversation);

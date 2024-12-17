@@ -246,10 +246,14 @@ export async function POST(request: Request) {
     // Send updated conversation state to all users in the conversation
     await Promise.all(
       conversation.users.map((user) => {
-        return pusherServer.trigger(user.email!, "conversation:update", {
-          id: conversationId,
-          messages: [lastMessage], // Send the last message
-        });
+        return pusherServer.trigger(
+          `${user.id}-updateConvo`,
+          "conversation:update",
+          {
+            id: conversationId,
+            messages: [lastMessage], // Send the last message
+          }
+        );
       })
     );
 

@@ -36,9 +36,9 @@ export async function DELETE(
     });
 
     existingConversation.users.map((user) => {
-      if (user.email) {
+      if (user.id) {
         pusherServer.trigger(
-          user.email,
+          `${user.id}-removeConvo`,
           "conversation:remove",
           existingConversation
         );

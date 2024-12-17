@@ -197,11 +197,53 @@ const ConversationList: React.FC<ConversationListProps> = ({
   //     pusherClient.unbind("conversation:remove", removeHandler);
   //   };
   // }, [currentUser.email, session]);
+  // useEffect(() => {
+  //   if (!currentUser?.email) return;
+
+  //   pusherClient.subscribe(currentUser.email);
+
+  //   const newHandler = (conversation: FullConversationType) => {
+  //     setItems((current) => {
+  //       if (current.some((convo) => convo.id === conversation.id)) {
+  //         return current;
+  //       }
+  //       return [conversation, ...current];
+  //     });
+  //   };
+
+  //   const updateHandler = (conversation: FullConversationType) => {
+  //     setItems((current) =>
+  //       current.map((currentConvo) => {
+  //         if (currentConvo.id === conversation.id) {
+  //           return { ...currentConvo, messages: conversation.messages };
+  //         }
+  //         return currentConvo;
+  //       })
+  //     );
+  //   };
+
+  //   const removeHandler = (conversation: FullConversationType) => {
+  //     setItems((current) =>
+  //       current.filter((dltConvo) => dltConvo.id !== conversation.id)
+  //     );
+  //   };
+
+  //   pusherClient.bind("conversation:new", newHandler);
+  //   pusherClient.bind("conversation:update", updateHandler);
+  //   pusherClient.bind("conversation:remove", removeHandler);
+
+  //   return () => {
+  //     pusherClient.unsubscribe(currentUser?.email!);
+  //     pusherClient.unbind("conversation:new", newHandler);
+  //     pusherClient.unbind("conversation:update", updateHandler);
+  //     pusherClient.unbind("conversation:remove", removeHandler);
+  //   };
+  // }, [currentUser?.email, session]);
+
   useEffect(() => {
     if (!currentUser?.email) return;
 
-    pusherClient.subscribe(currentUser.email);
-
+    pusherClient.subscribe(`${currentUser.id}-newConvo`);
     const newHandler = (conversation: FullConversationType) => {
       setItems((current) => {
         if (current.some((convo) => convo.id === conversation.id)) {
@@ -210,7 +252,16 @@ const ConversationList: React.FC<ConversationListProps> = ({
         return [conversation, ...current];
       });
     };
+    pusherClient.bind("conversation:new", newHandler);
+    return () => {
+      pusherClient.unsubscribe(`${currentUser.id}-newConvo`);
+      pusherClient.unbind("conversation:new", newHandler);
+    };
+  }, [currentUser.id, session]);
+  useEffect(() => {
+    if (!currentUser?.email) return;
 
+    pusherClient.subscribe(`${currentUser.id}-updateConvo`);
     const updateHandler = (conversation: FullConversationType) => {
       setItems((current) =>
         current.map((currentConvo) => {
@@ -221,24 +272,29 @@ const ConversationList: React.FC<ConversationListProps> = ({
         })
       );
     };
+    pusherClient.bind("conversation:update", updateHandler);
 
+    return () => {
+      pusherClient.unsubscribe(`${currentUser.id}-updateConvo`);
+      pusherClient.unbind("conversation:update", updateHandler);
+    };
+  }, [currentUser.id, session]);
+  useEffect(() => {
+    if (!currentUser?.email) return;
+
+    pusherClient.subscribe(`${currentUser.id}-removeConvo`);
     const removeHandler = (conversation: FullConversationType) => {
       setItems((current) =>
         current.filter((dltConvo) => dltConvo.id !== conversation.id)
       );
     };
-
-    pusherClient.bind("conversation:new", newHandler);
-    pusherClient.bind("conversation:update", updateHandler);
     pusherClient.bind("conversation:remove", removeHandler);
 
     return () => {
-      pusherClient.unsubscribe(currentUser?.email!);
-      pusherClient.unbind("conversation:new", newHandler);
-      pusherClient.unbind("conversation:update", updateHandler);
+      pusherClient.unsubscribe(`${currentUser.id}-removeConvo`);
       pusherClient.unbind("conversation:remove", removeHandler);
     };
-  }, [currentUser?.email, session]);
+  }, [currentUser.id, session]);
   return (
     <>
       <GroupChatModal
