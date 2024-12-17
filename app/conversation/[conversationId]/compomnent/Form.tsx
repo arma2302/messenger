@@ -46,6 +46,11 @@ const Form2: React.FC<FormProps> = ({ convo, currentUser }) => {
   // Handle message submit (text)
   const onSubmit: SubmitHandler<FieldValues> = (data) => {
     console.log(data, "DTAA");
+    axios.post("/api/notification", {
+      ...data,
+      userId: otherUser.id,
+      conversationId: conversationId,
+    });
 
     setValue("message", "", { shouldValidate: true });
     axios.post("/api/messages", {
@@ -64,6 +69,12 @@ const Form2: React.FC<FormProps> = ({ convo, currentUser }) => {
       conversationId: conversationId,
       userId: otherUser.id,
     });
+    axios.post("/api/notification", {
+      image: result?.info?.secure_url,
+      userId: otherUser.id,
+      conversationId: conversationId,
+    });
+
     console.log("Image upload button clicked");
     console.log(result?.info?.secure_url, "img url");
   };
@@ -130,6 +141,12 @@ const Form2: React.FC<FormProps> = ({ convo, currentUser }) => {
         console.error("Error sending voice note", error);
       }
     }
+
+    axios.post("/api/notification", {
+      audio: cloudinaryUrl,
+      userId: otherUser.id,
+      conversationId: conversationId,
+    });
   };
 
   const deleteRecording = () => {
